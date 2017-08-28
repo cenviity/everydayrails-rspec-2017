@@ -23,8 +23,6 @@ RSpec.describe User, type: :model do
     expect(user.errors[:last_name]).to include("can't be blank")
   end
   
-  it "is invalid without an email address"
-  
   it "is invalid with a duplicate email address" do
     User.create(
       first_name: "Joe",
