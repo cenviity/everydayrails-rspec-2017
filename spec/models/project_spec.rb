@@ -58,4 +58,31 @@ RSpec.describe Project, type: :model do
       expect(other_project).to be_valid
     end
   end
+  
+  describe "#late?" do
+    before do
+      @project = Project.new(
+        name: "Test Project",
+        owner: @user
+      )
+    end
+    
+    it "returns true if due date is earlier than today" do
+      @project.due_on = Date.today - 1
+      
+      expect(@project.late?).to be true
+    end
+    
+    it "returns false if due date is today" do
+      @project.due_on = Date.today
+      
+      expect(@project.late?).to be false
+    end
+    
+    it "returns false if due date is later than today" do
+      @project.due_on = Date.today + 1
+      
+      expect(@project.late?).to be false
+    end
+  end
 end
