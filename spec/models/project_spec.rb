@@ -1,15 +1,40 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-  describe "name" do
-    before do
-      @user = User.create(
+  before do
+    @user = User.create(
         first_name: "Joe",
         last_name:  "Tester",
         email:      "joetester@example.com",
         password:   "dottle-nouveau-pavilion-tights-furze"
-      )
-      
+    )
+  end
+  
+  it "is valid with a name and owner" do
+    project = Project.new(
+      name: "Test Project",
+      owner: @user
+    )
+    
+    expect(project).to be_valid
+  end
+  
+  it "is invalid without a name" do
+    project = Project.new(name: nil)
+    
+    project.valid?
+    expect(project.errors[:name]).to include("can't be blank")
+  end
+  
+  it "is invalid without an owner" do
+    project = Project.new(owner: nil)
+    
+    project.valid?
+    expect(project.errors[:owner]).to include("must exist")
+  end
+  
+  describe "name" do
+    before do
       @user.projects.create(name: "Test Project")
     end
     
