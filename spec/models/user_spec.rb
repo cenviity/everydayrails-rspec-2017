@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  it "has a valid factory" do
+    expect(build(:user)).to be_valid
+  end
+  
   it "is valid with a first name, last name and email, and password" do
     user = User.new(
       first_name: "Aaron",
