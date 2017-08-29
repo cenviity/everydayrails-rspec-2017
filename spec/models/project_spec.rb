@@ -47,6 +47,11 @@ RSpec.describe Project, type: :model do
     expect(other_project).to be_valid
   end
   
+  it "can have many notes" do
+    project = create(:project)
+    expect(project.notes.length).to eq 5
+  end
+  
   describe "late status" do
     it "is late when the due date is past today" do
       project = create(:project, :due_yesterday)
