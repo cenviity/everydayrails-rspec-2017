@@ -37,17 +37,14 @@ RSpec.describe Note, type: :model do
 
   describe "search message for a term" do
     before do
-      @note1 = @project.notes.create(
-        message: "This is the first note.",
-        user: @user,
+      @note1 = create(:note,
+        message: "This is the first note."
       )
-      @note2 = @project.notes.create(
-        message: "This is the second note.",
-        user: @user,
+      @note2 = create(:note,
+        message: "This is the second note."
       )
-      @note3 = @project.notes.create(
-        message: "First, preheat the oven.",
-        user: @user,
+      @note3 = create(:note,
+        message: "First, preheat the oven."
       )
     end
 
