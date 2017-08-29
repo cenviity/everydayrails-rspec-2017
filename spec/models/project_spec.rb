@@ -46,4 +46,21 @@ RSpec.describe Project, type: :model do
 
     expect(other_project).to be_valid
   end
+  
+  describe "late status" do
+    it "is late when the due date is past today" do
+      project = create(:project_due_yesterday)
+      expect(project).to be_late
+    end
+    
+    it "is on time when the due date is today" do
+      project = create(:project_due_today)
+      expect(project).not_to be_late
+    end
+    
+    it "is on time when the due date is in the future" do
+      project = create(:project_due_tomorrow)
+      expect(project).not_to be_late
+    end
+  end
 end
