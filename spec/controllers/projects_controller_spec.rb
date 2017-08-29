@@ -124,5 +124,23 @@ RSpec.describe ProjectsController, type: :controller do
         expect(response).to redirect_to root_path
       end
     end
+    
+    context "as a guest" do
+      before do
+        @project = create(:project)
+      end
+      
+      it "returns a 302 response" do
+        project_params = attributes_for(:project)
+        patch :update, params: { id: @project.id, project: project_params }
+        expect(response).to have_http_status "302"
+      end
+      
+      it "redirects to the sign-in page" do
+        project_params = attributes_for(:project)
+        patch :update, params: { id: @project.id, project: project_params }
+        expect(response).to redirect_to "/users/sign_in"
+      end
+    end
   end
 end
