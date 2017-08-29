@@ -61,4 +61,28 @@ RSpec.describe ProjectsController, type: :controller do
       end
     end
   end
+  
+  describe "#create" do
+    context "as an authenticated user" do
+      before do
+        @user = create(:user)
+      end
+      
+      it "adds a project" do
+        project_params = attributes_for(:project)
+        sign_in @user
+        expect {
+          post :create, params: { project: project_params }
+        }.to change(@user.projects, :count).by(1)
+      end
+    end
+    
+    context "as a guest" do
+      it "returns a 302 response" do
+        project_params = attributes_for(:project)
+        post :create, params: { project: project_params }
+        expect(response).to redirect_to "/users/sign_in"
+      end
+    end
+  end
 end
