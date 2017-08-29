@@ -32,4 +32,33 @@ RSpec.describe ProjectsController, type: :controller do
       end
     end
   end
+  
+  describe "#show" do
+    context "as an authorised user" do
+      before do
+        @user = create(:user)
+        @project = create(:project, owner: @user)
+      end
+      
+      it "responds successfully" do
+        sign_in @user
+        get :show, params: { id: @project.id }
+        expect(response).to be_success
+      end
+    end
+    
+    context "as an unauthorised user" do
+      before do
+        @user = create(:user)
+        other_user = create(:user)
+        @project = create(:project, owner: other_user)
+      end
+      
+      it "redirects to the dashboard" do
+        sign_in @user
+        get :show, params: { id: @project.id }
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
 end
