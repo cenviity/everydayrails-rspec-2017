@@ -62,6 +62,77 @@ RSpec.describe ProjectsController, type: :controller do
     end
   end
   
+  describe "#new" do
+    context "as an authenticated user" do
+      before do
+        @user = create(:user)
+      end
+      
+      it "responds successfully" do
+        sign_in @user
+        get :new
+        expect(response).to be_success
+      end
+    end
+    
+    context "as a guest" do
+      it "returns a 302 response" do
+        get :new
+        expect(response).to have_http_status "302"
+      end
+      
+      it "redirects to the sign-in page" do
+        get :new
+        expect(response).to redirect_to "/users/sign_in"
+      end
+    end
+  end
+  
+  describe "#edit" do
+    context "as an authenticated user" do
+      before do
+        @user = create(:user)
+        @project = create(:project, owner: @user)
+      end
+      
+      it "responds successfully" do
+        sign_in @user
+        get :edit, params: { id: @project.id }
+        expect(response).to be_success
+      end
+    end
+    
+    context "as an unauthorised user" do
+      before do
+        @user = create(:user)
+        other_user = create(:user)
+        @project = create(:project, owner: other_user)
+      end
+      
+      it "redirects to the dashboard" do
+        sign_in @user
+        get :edit, params: { id: @project.id }
+        expect(response).to redirect_to root_path
+      end
+    end
+    
+    context "as a guest" do
+      before do
+        @project = create(:project)
+      end
+      
+      it "returns a 302 response" do
+        get :edit, params: { id: @project.id }
+        expect(response).to have_http_status "302"
+      end
+      
+      it "redirects to the sign-in page" do
+        get :edit, params: { id: @project.id }
+        expect(response).to redirect_to "/users/sign_in"
+      end
+    end
+  end
+  
   describe "#create" do
     context "as an authenticated user" do
       before do
