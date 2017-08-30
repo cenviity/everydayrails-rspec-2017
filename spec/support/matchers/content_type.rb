@@ -12,6 +12,6 @@ RSpec::Matchers.define :have_content_type do |expected|
       html: "text/html",
       json: "application/json"
     }
-    types[type.to_sym] || "unknown content type"
+    types[type.try(:to_sym)] || "unknown content type"
   end
 end
