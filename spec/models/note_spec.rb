@@ -18,6 +18,12 @@ RSpec.describe Note, type: :model do
     note.valid?
     expect(note.errors[:message]).to include("can't be blank")
   end
+  
+  it "delegates name to the user who created it" do
+    user = create(:user, first_name: "Fake", last_name: "User")
+    note = Note.new(user: user)
+    expect(note.user_name).to eq "Fake User"
+  end
 
   describe "search message for a term" do
     let!(:note1) {
