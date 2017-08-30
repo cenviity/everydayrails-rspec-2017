@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "Projects", type: :feature do
   scenario "user creates a new project" do
     user = FactoryGirl.create(:user)
-    sign_in_as user
+    login_as user, scope: :user
 
     expect {
       click_link "New Project"
