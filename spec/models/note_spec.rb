@@ -20,19 +20,19 @@ RSpec.describe Note, type: :model do
   end
 
   describe "search message for a term" do
-    let(:note1) { create(:note,
+    let!(:note1) { create(:note,
         project: project,
         user: user,
         message: "This is the first note."
       )
     }
-    let(:note2) { create(:note,
+    let!(:note2) { create(:note,
         project: project,
         user: user,
         message: "This is the second note."
       )
     }
-    let(:note3) { create(:note,
+    let!(:note3) { create(:note,
         project: project,
         user: user,
         message: "First, preheat the oven."
