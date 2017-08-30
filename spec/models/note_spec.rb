@@ -1,24 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Note, type: :model do
-  before do
-    @user = User.create(
-      first_name: "Joe",
-      last_name:  "Tester",
-      email:      "joetester@example.com",
-      password:   "dottle-nouveau-pavilion-tights-furze",
-    )
-
-    @project = @user.projects.create(
-      name: "Test Project",
-    )
-  end
+  let(:user) { create(:user) }
+  let(:project) { create(:project, owner: user) }
 
   it "is valid with a user, project, and message" do
     note = Note.new(
       message: "This is a sample note.",
-      user: @user,
-      project: @project,
+      user: user,
+      project: project,
     )
     expect(note).to be_valid
   end
@@ -30,24 +20,28 @@ RSpec.describe Note, type: :model do
   end
 
   describe "search message for a term" do
-    before do
-      @note1 = @project.notes.create(
-        message: "This is the first note.",
-        user: @user,
+    let(:note1) { create(:note,
+        project: project,
+        user: user,
+        message: "This is the first note."
       )
-      @note2 = @project.notes.create(
-        message: "This is the second note.",
-        user: @user,
+    }
+    let(:note2) { create(:note,
+        project: project,
+        user: user,
+        message: "This is the second note."
       )
-      @note3 = @project.notes.create(
-        message: "First, preheat the oven.",
-        user: @user,
+    }
+    let(:note3) { create(:note,
+        project: project,
+        user: user,
+        message: "First, preheat the oven."
       )
-    end
+    }
 
     context "when a match is found" do
       it "returns notes that match the search term" do
-        expect(Note.search("first")).to include(@note1, @note3)
+        expect(Note.search("first")).to include(note1, note3)
       end
     end
 
