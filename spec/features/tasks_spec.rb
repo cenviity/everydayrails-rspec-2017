@@ -9,6 +9,7 @@ RSpec.feature "Tasks", type: :feature do
     task = project.tasks.create!(name: "Finish RSpec tutorial")
     
     login_as user, scope: :user
+    visit root_path
     click_link "RSpec tutorial"
     check "Finish RSpec tutorial"
 

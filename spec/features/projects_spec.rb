@@ -4,6 +4,7 @@ RSpec.feature "Projects", type: :feature do
   scenario "user creates a new project" do
     user = FactoryGirl.create(:user)
     login_as user, scope: :user
+    visit root_path
 
     expect {
       click_link "New Project"
